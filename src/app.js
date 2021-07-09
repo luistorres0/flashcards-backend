@@ -12,7 +12,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res, next) => res.json({ data: "hello" }));
+// app.use("/decks")
 
 app.use(notFound);
 app.use(errorHandler);
