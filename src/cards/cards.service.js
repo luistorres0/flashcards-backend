@@ -1,9 +1,14 @@
 const knex = require("../db/connection");
 
-function list() {
+function listAllCards() {
   return knex("cards").select("*");
 }
 
+function listCardsInDeck(deckId) {
+  return knex("cards").select("*").where({ deckId });
+}
+
 module.exports = {
-  list,
+  listAllCards,
+  listCardsInDeck,
 };
