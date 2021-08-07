@@ -16,6 +16,20 @@ function list() {
     });
 }
 
+function read(deckId) {
+  return knex("decks")
+    .select("*")
+    .where({ id: deckId })
+    .first()
+    .then((deck) => {
+      return cardsService.listCardsInDeck(deck.id).then((cards) => {
+        deck.cards = cards;
+        return deck;
+      });
+    });
+}
+
 module.exports = {
   list,
+  read,
 };
