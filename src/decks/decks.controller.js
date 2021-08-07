@@ -20,6 +20,34 @@ async function deckExists(req, res, next) {
   });
 }
 
+function validateNameProperty(req, res, next) {
+  const { name } = req.body.data;
+
+  if (!name || name.length === 0) {
+    return next({
+      status: 400,
+      message:
+        "'name' property is missing or is an empty string. Please include a valid 'name' property in the request body.",
+    });
+  }
+
+  next();
+}
+
+function validateDescriptionProperty(req, res, next) {
+  const { description } = req.body.data;
+
+  if (!description || description.length === 0) {
+    return next({
+      status: 400,
+      message:
+        "'description' property is missing or is an empty string. Please include a valid 'description' property in the request body.",
+    });
+  }
+
+  next();
+}
+
 // ================================================================================================================== //
 // ================================================== CRUD Handlers ================================================= //
 // ================================================================================================================== //
@@ -35,7 +63,14 @@ async function read(req, res, next) {
   res.json({ data });
 }
 
+async function create(req, res, next) {
+  const newDeck = req.body.data;
+  const data = await service.create(newDeck);
+  res.json({ data });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(deckExists), asyncErrorBoundary(read)],
+  create: [validateNameProperty, validateDescriptionProperty, asyncErrorBoundary(create)],
 };

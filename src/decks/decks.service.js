@@ -29,7 +29,14 @@ function read(deckId) {
     });
 }
 
+function create(newDeck) {
+  return knex("decks")
+    .insert(newDeck, "*")
+    .then((decks) => decks[0]);
+}
+
 module.exports = {
   list,
   read,
+  create,
 };
