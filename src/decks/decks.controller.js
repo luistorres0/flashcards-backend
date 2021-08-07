@@ -69,8 +69,28 @@ async function create(req, res, next) {
   res.json({ data });
 }
 
+async function update(req, res, next) {
+  // Strips the cards out of the existing deck.
+  const { cards, ...rest } = res.locals.foundDeck;
+
+  const updatedDeck = {
+    ...rest,
+    ...req.body.data,
+  };
+
+  const data = await service.update(updatedDeck);
+
+  res.json({ data });
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(deckExists), asyncErrorBoundary(read)],
   create: [validateNameProperty, validateDescriptionProperty, asyncErrorBoundary(create)],
+  update: [
+    asyncErrorBoundary(deckExists),
+    validateNameProperty,
+    validateDescriptionProperty,
+    asyncErrorBoundary(update),
+  ],
 };

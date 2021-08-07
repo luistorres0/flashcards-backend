@@ -22,10 +22,14 @@ function read(deckId) {
     .where({ id: deckId })
     .first()
     .then((deck) => {
-      return cardsService.listCardsInDeck(deck.id).then((cards) => {
-        deck.cards = cards;
-        return deck;
-      });
+      if (deck) {
+        return cardsService.listCardsInDeck(deck.id).then((cards) => {
+          deck.cards = cards;
+          return deck;
+        });
+      }
+
+      return null;
     });
 }
 
@@ -35,8 +39,16 @@ function create(newDeck) {
     .then((decks) => decks[0]);
 }
 
+function update(updatedDeck) {
+  return knex("decks")
+    .update(updatedDeck, "*")
+    .where({ id: updatedDeck.id })
+    .then((deck) => deck[0]);
+}
+
 module.exports = {
   list,
   read,
   create,
+  update,
 };
