@@ -83,6 +83,13 @@ async function update(req, res, next) {
   res.json({ data });
 }
 
+async function destroy(req, res, next) {
+  const { deckId } = req.params;
+  await service.destroy(Number(deckId));
+
+  res.sendStatus(204);
+}
+
 module.exports = {
   list: [asyncErrorBoundary(list)],
   read: [asyncErrorBoundary(deckExists), asyncErrorBoundary(read)],
@@ -93,4 +100,5 @@ module.exports = {
     validateDescriptionProperty,
     asyncErrorBoundary(update),
   ],
+  destroy: [asyncErrorBoundary(deckExists), asyncErrorBoundary(destroy)],
 };

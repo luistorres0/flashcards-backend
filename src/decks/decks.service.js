@@ -46,9 +46,14 @@ function update(updatedDeck) {
     .then((deck) => deck[0]);
 }
 
+function destroy(deckId) {
+  return knex("decks").del().where({ id: deckId });
+}
+
 module.exports = {
   list,
   read,
   create,
   update,
+  destroy,
 };
