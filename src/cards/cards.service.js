@@ -12,8 +12,15 @@ function read(cardId) {
   return knex("cards").select("*").where({ id: cardId }).first();
 }
 
+function create(newCard) {
+  return knex("cards")
+    .insert(newCard, "*")
+    .then((cards) => cards[0]);
+}
+
 module.exports = {
   listAllCards,
   listCardsInDeck,
   read,
+  create,
 };
