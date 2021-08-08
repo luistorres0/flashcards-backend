@@ -111,6 +111,14 @@ async function update(req, res, next) {
   res.json({ data });
 }
 
+async function destroy(req, res, next) {
+  const { cardId } = req.params;
+
+  await service.destroy(Number(cardId));
+
+  res.sendStatus(204);
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(cardExists), asyncErrorBoundary(read)],
@@ -122,4 +130,5 @@ module.exports = {
     validateDeckIdProperty,
     asyncErrorBoundary(update),
   ],
+  destroy: [asyncErrorBoundary(cardExists), asyncErrorBoundary(destroy)],
 };

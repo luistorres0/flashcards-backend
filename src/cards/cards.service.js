@@ -25,10 +25,15 @@ function update(updatedCard) {
     .then((cards) => cards[0]);
 }
 
+function destroy(cardId) {
+  return knex("cards").del().where({ id: cardId });
+}
+
 module.exports = {
   listAllCards,
   listCardsInDeck,
   read,
   create,
   update,
+  destroy,
 };
