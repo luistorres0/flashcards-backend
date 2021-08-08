@@ -18,9 +18,17 @@ function create(newCard) {
     .then((cards) => cards[0]);
 }
 
+function update(updatedCard) {
+  return knex("cards")
+    .update(updatedCard, "*")
+    .where({ id: updatedCard.id })
+    .then((cards) => cards[0]);
+}
+
 module.exports = {
   listAllCards,
   listCardsInDeck,
   read,
   create,
+  update,
 };

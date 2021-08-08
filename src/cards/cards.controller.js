@@ -100,8 +100,26 @@ async function create(req, res, next) {
   res.json({ data });
 }
 
+async function update(req, res, next) {
+  const updatedCard = {
+    ...res.locals.foundCard,
+    ...req.body.data,
+  };
+
+  const data = await service.update(updatedCard);
+
+  res.json({ data });
+}
+
 module.exports = {
   list: asyncErrorBoundary(list),
   read: [asyncErrorBoundary(cardExists), asyncErrorBoundary(read)],
   create: [validateFrontProperty, validateBackProperty, validateDeckIdProperty, create],
+  update: [
+    asyncErrorBoundary(cardExists),
+    validateFrontProperty,
+    validateBackProperty,
+    validateDeckIdProperty,
+    asyncErrorBoundary(update),
+  ],
 };
